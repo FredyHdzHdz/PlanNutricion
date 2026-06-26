@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan Nutricional – Armando Carlos Gómez Sánchez</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:   #0f2444;
+    --teal:   #0d6e6e;
+    --amber:  #c97d00;
+    --rose:   #b83a3a;
+    --sage:   #3a7a55;
+    --cream:  #f5f3ef;
+    --white:  #ffffff;
+    --gray1:  #f0eee9;
+    --gray2:  #d8d4cc;
+    --gray3:  #9a9490;
+    --gray4:  #4a4744;
+    --ink:    #1a1714;
+    --border: #d0ccc4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13.5px;
+    line-height: 1.65;
+    background: var(--cream);
+    color: var(--ink);
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--navy);
+    color: var(--white);
+    padding: 2rem 2.5rem 1.6rem;
+    border-bottom: 4px solid var(--teal);
+  }
+  header .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: .5rem;
+  }
+  header h1 {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 1.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: .4rem;
+  }
+  header .meta {
+    font-size: 12px;
+    color: #a0b8c8;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: .6rem;
+  }
+  header .meta span::before { content: "· "; color: var(--teal); }
+
+  /* ── NAV TABS ── */
+  nav.tabs {
+    background: var(--navy);
+    padding: 0 2.5rem;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    border-bottom: 1px solid #1e3a5a;
+  }
+  nav.tabs button {
+    background: none;
+    border: none;
+    color: #7a9ab5;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11.5px;
+    font-weight: 500;
+    padding: .7rem 1.1rem;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all .18s;
+  }
+  nav.tabs button:hover { color: var(--white); }
+  nav.tabs button.active {
+    color: var(--white);
+    border-bottom-color: var(--teal);
+  }
+
+  /* ── LAYOUT ── */
+  main { max-width: 960px; margin: 0 auto; padding: 1.8rem 2rem 3rem; }
+
+  .section { display: none; animation: fadeIn .25s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+
+  /* ── SECTION TITLES ── */
+  h2.sec-title {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 1.25rem;
+    color: var(--navy);
+    border-left: 4px solid var(--teal);
+    padding-left: .75rem;
+    margin: 1.6rem 0 1rem;
+  }
+  h3.sub-title {
+    font-size: .95rem;
+    font-weight: 600;
+    color: var(--teal);
+    margin: 1.2rem 0 .5rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+
+  /* ── CARDS / BOXES ── */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.1rem 1.3rem;
+    margin-bottom: 1rem;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: .7rem;
+    margin-bottom: 1rem;
+  }
+  .stat-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: .85rem 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .stat-card.ok::before   { background: var(--sage); }
+  .stat-card.warn::before { background: var(--amber); }
+  .stat-card.alert::before{ background: var(--rose); }
+  .stat-card .label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--gray3); }
+  .stat-card .value { font-family: 'IBM Plex Mono', monospace; font-size: 1.1rem; font-weight: 500; color: var(--navy); }
+  .stat-card .ref   { font-size: 10px; color: var(--gray3); margin-top: 2px; }
+
+  /* ── TABLES ── */
+  .tbl-wrap { overflow-x: auto; margin-bottom: 1rem; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  thead th {
+    background: var(--navy);
+    color: var(--white);
+    font-weight: 500;
+    text-align: left;
+    padding: .55rem .8rem;
+    font-size: 11px;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+  }
+  tbody tr:nth-child(even) { background: var(--gray1); }
+  tbody td { padding: .45rem .8rem; vertical-align: top; border-bottom: 1px solid var(--border); }
+  tbody tr:last-child td { border-bottom: none; }
+  .num { font-family: 'IBM Plex Mono', monospace; text-align: right; }
+  .tag {
+    display: inline-block;
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    padding: 1px 6px;
+    border-radius: 2px;
+  }
+  .tag-alert { background: #fde8e8; color: var(--rose); }
+  .tag-warn  { background: #fef3dc; color: var(--amber); }
+  .tag-ok    { background: #e4f4ec; color: var(--sage); }
+
+  /* ── PILLS / LISTS ── */
+  .pill-list { display: flex; flex-wrap: wrap; gap: .35rem; margin: .4rem 0 .8rem; }
+  .pill {
+    font-size: 11px;
+    padding: 2px 9px;
+    border-radius: 20px;
+    border: 1px solid;
+  }
+  .pill-green  { background: #e4f4ec; border-color: #8dbfa4; color: #2d6644; }
+  .pill-amber  { background: #fef3dc; border-color: #d4a742; color: #7a5200; }
+  .pill-red    { background: #fde8e8; border-color: #d47a7a; color: #7a2020; }
+
+  ul.custom { list-style: none; padding-left: 0; }
+  ul.custom li { padding: .2rem 0 .2rem 1.1rem; position: relative; }
+  ul.custom li::before { content: "▸"; position: absolute; left: 0; color: var(--teal); font-size: 10px; top: 4px; }
+
+  /* ── MENU DAYS ── */
+  .day-tabs { display: flex; gap: .5rem; margin-bottom: 1rem; }
+  .day-btn {
+    background: var(--gray1);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: .4rem .9rem;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--gray4);
+    transition: all .15s;
+  }
+  .day-btn.active { background: var(--teal); color: var(--white); border-color: var(--teal); }
+  .menu-day { display: none; }
+  .menu-day.active { display: block; }
+
+  .meal-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: .7rem;
+    overflow: hidden;
+  }
+  .meal-header {
+    background: var(--gray1);
+    border-bottom: 1px solid var(--border);
+    padding: .5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .meal-header .meal-name { font-weight: 600; font-size: 13px; color: var(--navy); }
+  .meal-header .meal-time { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--gray3); }
+  .meal-body { padding: .75rem 1rem; }
+
+  /* ── HYDRATION TIMELINE ── */
+  .hydro-bar {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin-bottom: .5rem;
+  }
+  .hydro-time { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--gray3); width: 48px; flex-shrink: 0; }
+  .hydro-track { flex: 1; background: var(--gray2); border-radius: 2px; height: 8px; overflow: hidden; }
+  .hydro-fill  { height: 100%; background: var(--teal); border-radius: 2px; }
+  .hydro-ml { font-size: 11px; color: var(--gray4); width: 50px; text-align: right; flex-shrink: 0; }
+
+  /* ── ALERT BOX ── */
+  .alert-box {
+    border-left: 4px solid;
+    padding: .7rem 1rem;
+    margin-bottom: .8rem;
+    border-radius: 0 4px 4px 0;
+    font-size: 12.5px;
+  }
+  .alert-box.warning { border-color: var(--amber); background: #fffaf0; }
+  .alert-box.danger  { border-color: var(--rose);  background: #fff5f5; }
+  .alert-box.info    { border-color: var(--teal);  background: #f0fafa; }
+  .alert-box .alert-title { font-weight: 600; margin-bottom: .2rem; font-size: 12px; }
+
+  /* ── PES BLOCK ── */
+  .pes-block {
+    background: var(--navy);
+    color: var(--white);
+    border-radius: 4px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 1rem;
+    font-size: 13px;
+  }
+  .pes-block .pes-row { display: flex; gap: .8rem; margin-bottom: .5rem; }
+  .pes-block .pes-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--teal);
+    width: 80px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .pes-block .pes-text { color: #d0e4f0; line-height: 1.5; }
+
+  /* ── CALC STEPS ── */
+  .calc-box {
+    background: var(--gray1);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: .8rem 1rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    margin-bottom: .8rem;
+    line-height: 1.8;
+    color: var(--navy);
+  }
+  .calc-box .result { color: var(--teal); font-weight: 500; }
+
+  /* ── FOOD LISTS ── */
+  .food-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .8rem; }
+  @media (max-width: 600px) {
+    .food-col { grid-template-columns: 1fr; }
+    .card-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .food-group { background: var(--white); border: 1px solid var(--border); border-radius: 4px; padding: .8rem 1rem; }
+  .food-group h4 { font-size: 12px; font-weight: 600; margin-bottom: .4rem; }
+  .food-group.green h4 { color: var(--sage); }
+  .food-group.amber h4 { color: var(--amber); }
+  .food-group.red h4   { color: var(--rose); }
+
+  /* ── RESPONSIVE ── */
+  @media print {
+    nav.tabs, .day-tabs { display: none; }
+    .section { display: block !important; }
+    .menu-day { display: block !important; }
+    header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: .8rem 2.5rem;
+    font-size: 10.5px;
+    color: var(--gray3);
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Intervención Nutricional Clínica · ERC Estadio 5 en Hemodiálisis</div>
+  <h1>Armando Carlos Gómez Sánchez</h1>
+  <div class="meta">
+    <span>42 años · Masculino</span>
+    <span>Peso: 66 kg · Talla: 1.73 m · IMC: 22.05 kg/m²</span>
+    <span>DM2 · HAS · ERC-5 · HD 3×/semana</span>
+    <span>Elaborado con base en KDOQI · ESPEN · SMAE vigente</span>
+  </div>
+</header>
+
+<nav class="tabs" id="mainNav">
+  <button class="active" onclick="showSection('eval',this)">1. Evaluación</button>
+  <button onclick="showSection('reqs',this)">2. Requerimientos</button>
+  <button onclick="showSection('menu',this)">3–4. Menú & Horario</button>
+  <button onclick="showSection('hidro',this)">5. Hidratación</button>
+  <button onclick="showSection('foods',this)">6. Alimentos</button>
+  <button onclick="showSection('recs',this)">7. Recomendaciones</button>
+  <button onclick="showSection('edu',this)">8. Educación</button>
+  <button onclick="showSection('pes',this)">9. PES</button>
+  <button onclick="showSection('conclusion',this)">10. Conclusión</button>
+</nav>
+
+<main>
+
+<!-- ═══════════════════════════════════════════════
+     SECCIÓN 1 – EVALUACIÓN NUTRICIONAL
+════════════════════════════════════════════════ -->
+<div class="section active" id="eval">
+
+  <h2 class="sec-title">1. Evaluación Nutricional Completa</h2>
+
+  <h3 class="sub-title">1.1 Antropometría e Índices</h3>
+  <div class="card-grid">
+    <div class="stat-card ok"><div class="label">Peso actual</div><div class="value">66 kg</div><div class="ref">+4 kg en 3 meses → retención hídrica</div></div>
+    <div class="stat-card ok"><div class="label">Talla</div><div class="value">1.73 m</div></div>
+    <div class="stat-card ok"><div class="label">IMC</div><div class="value">22.05 kg/m²</div><div class="ref">Normal (18.5–24.9)</div></div>
+    <div class="stat-card warn"><div class="label">Peso seco estimado</div><div class="value">~62 kg</div><div class="ref">Edema maleolar +/++; extracción 3.5–4 L/sesión</div></div>
+    <div class="stat-card warn"><div class="label">Ganancia interdialítica</div><div class="value">3.5–4 kg</div><div class="ref">Ideal ≤ 3% peso seco = ≤1.86 kg</div></div>
+  </div>
+
+  <div class="alert-box warning">
+    <div class="alert-title">⚠ Sobrecarga hídrica marcada</div>
+    El aumento de 4 kg en 3 meses, la diuresis residual &lt;300 mL/día, el edema maleolar y la ganancia interdialítica excesiva confirman sobrecarga de volumen, no ganancia de masa magra. El peso de referencia para cálculos es el <strong>peso seco estimado: 62 kg</strong>.
+  </div>
+
+  <h3 class="sub-title">1.2 Interpretación de Laboratorios</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Parámetro</th><th>Valor</th><th>Referencia</th><th>Interpretación</th><th>Estado</th></tr></thead>
+    <tbody>
+      <tr><td>Hemoglobina</td><td class="num">11.4 g/dL</td><td>13–17 (H)</td><td>Anemia leve asociada a ERC; respuesta parcial a hierro + eritropoyetina implícita</td><td><span class="tag tag-warn">↓ LEVE</span></td></tr>
+      <tr><td>Hematócrito</td><td class="num">38%</td><td>40–54%</td><td>Acorde con Hb; objetivo HD: Hb 10–12 g/dL (KDOQI)</td><td><span class="tag tag-warn">↓ LEVE</span></td></tr>
+      <tr><td>Glucosa</td><td class="num">301 mg/dL</td><td>70–100 (ayuno)</td><td>Hiperglucemia severa; HbA1c estimada &gt;8%. Requiere ajuste dietético y farmacológico urgente</td><td><span class="tag tag-alert">↑↑ CRÍTICO</span></td></tr>
+      <tr><td>Urea pre-HD</td><td class="num">408 mg/dL</td><td>&lt;150 mg/dL</td><td>Uremia marcada; sugiere catabolismo proteico elevado o ingesta proteica excesiva no controlada</td><td><span class="tag tag-alert">↑↑ CRÍTICO</span></td></tr>
+      <tr><td>URR</td><td class="num">75%</td><td>≥65%</td><td>Adecuación dialítica mínima aceptable; ideal ≥70%</td><td><span class="tag tag-warn">LÍMITE</span></td></tr>
+      <tr><td>BUN pre-HD</td><td class="num">190 mg/dL</td><td>&lt;70 mg/dL</td><td>Muy elevado; correlaciona con catabolismo proteico</td><td><span class="tag tag-alert">↑↑ CRÍTICO</span></td></tr>
+      <tr><td>Ácido úrico</td><td class="num">9.2 mg/dL</td><td>&lt;7.0 mg/dL</td><td>Hiperuricemia; riesgo de gota y depósitos articulares. HD retira parcialmente</td><td><span class="tag tag-alert">↑ ALTO</span></td></tr>
+      <tr><td>Sodio</td><td class="num">132 mmol/L</td><td>135–145</td><td>Hiponatremia leve; típica en ERC con retención hídrica. Sed paradójica nocturna</td><td><span class="tag tag-warn">↓ LEVE</span></td></tr>
+      <tr><td>Potasio</td><td class="num">7.1 mmol/L</td><td>3.5–5.0</td><td><strong>Hiperpotasemia severa</strong>; riesgo de arritmias letales. Prioritario intervenir</td><td><span class="tag tag-alert">↑↑ CRÍTICO</span></td></tr>
+      <tr><td>Calcio</td><td class="num">8.7 mg/dL</td><td>8.5–10.5</td><td>Normal-bajo; calcitriol vigente. Vigilar paratiroidismo secundario</td><td><span class="tag tag-ok">NORMAL</span></td></tr>
+      <tr><td>Fósforo</td><td class="num">5.8 mg/dL</td><td>2.5–4.5</td><td>Hiperfosfatemia; riesgo de calcificaciones vasculares y prurito urémico</td><td><span class="tag tag-alert">↑ ALTO</span></td></tr>
+      <tr><td>Albúmina</td><td class="num">3.9 g/dL</td><td>≥4.0 g/dL (HD)</td><td>Marginalmente baja para HD. Meta KDOQI ≥4 g/dL. Riesgo nutricional leve-moderado</td><td><span class="tag tag-warn">↓ MARGINAL</span></td></tr>
+      <tr><td>Proteínas totales</td><td class="num">7.6 g/dL</td><td>6.4–8.3</td><td>Normal; relativizado por estado de hidratación</td><td><span class="tag tag-ok">NORMAL</span></td></tr>
+      <tr><td>Cloro</td><td class="num">95.6 mmol/L</td><td>98–107</td><td>Levemente bajo; asociado a hiponatremia</td><td><span class="tag tag-warn">↓ LEVE</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 class="sub-title">1.3 Diagnóstico Nutricional</h3>
+  <div class="card">
+    <p>El paciente presenta un estado nutricional <strong>borderline/riesgo nutricional moderado</strong> con los siguientes hallazgos dominantes:</p>
+    <br>
+    <ul class="custom">
+      <li><strong>Hiperpotasemia severa (K⁺ 7.1 mmol/L)</strong> — prioritario; riesgo vital inmediato.</li>
+      <li><strong>Hiperglucemia severa (glucosa 301 mg/dL)</strong> — control glucémico deficiente pese a insulina glargina + linagliptina.</li>
+      <li><strong>Hiperfosfatemia (P 5.8 mg/dL)</strong> — contribuye a prurito urémico y calcificaciones vasculares.</li>
+      <li><strong>Sobrecarga hídrica</strong> — ganancia interdialítica 3.5–4 kg; diuresis residual &lt;300 mL/día.</li>
+      <li><strong>Uremia marcada (Urea 408, BUN 190)</strong> — catabolismo elevado; adecuación dialítica limítrofe.</li>
+      <li><strong>Albúmina 3.9 g/dL</strong> — levemente por debajo de meta; riesgo de desnutrición proteica.</li>
+      <li><strong>Anemia leve-moderada</strong> — Hb 11.4 g/dL; dentro del rango objetivo HD pero requiere vigilancia.</li>
+      <li><strong>Hiperuricemia</strong> — ácido úrico 9.2 mg/dL; parcialmente manejado por HD.</li>
+      <li><strong>Hiponatremia dilucional (Na 132 mmol/L)</strong> — no restricción de sodio agresiva; controlar volumen.</li>
+      <li><strong>Hipertensión no controlada (150/92, picos 165/100)</strong> — multifactorial: volumen, sodio, estrés.</li>
+    </ul>
+  </div>
+
+  <h3 class="sub-title">1.4 Problemas Prioritarios por Urgencia Clínica</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>#</th><th>Problema</th><th>Urgencia</th><th>Intervención principal</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Hiperpotasemia severa (7.1 mmol/L)</td><td><span class="tag tag-alert">INMEDIATA</span></td><td>Restricción K⁺ &lt;2,000 mg/día; doble cocción; eliminar alimentos ricos en K⁺</td></tr>
+      <tr><td>2</td><td>Hiperglucemia (301 mg/dL)</td><td><span class="tag tag-alert">INMEDIATA</span></td><td>Distribución carbohidratos, IG bajo, fraccionamiento; valorar ajuste insulina</td></tr>
+      <tr><td>3</td><td>Sobrecarga hídrica</td><td><span class="tag tag-alert">INMEDIATA</span></td><td>Restricción líquidos 700–800 mL/día + diuresis residual</td></tr>
+      <tr><td>4</td><td>Hiperfosfatemia (5.8 mg/dL)</td><td><span class="tag tag-warn">ALTA</span></td><td>P &lt;800 mg/día; limitar lácteos, leguminosas, bebidas oscuras</td></tr>
+      <tr><td>5</td><td>Uremia / Catabolismo (Urea 408)</td><td><span class="tag tag-warn">ALTA</span></td><td>Proteína 1.2 g/kg/día de alto valor biológico; adecuación dialítica</td></tr>
+      <tr><td>6</td><td>Albúmina marginal (3.9 g/dL)</td><td><span class="tag tag-warn">MEDIA</span></td><td>Cubrir requerimiento energético 30–35 kcal/kg/día para prevenir catabolismo</td></tr>
+      <tr><td>7</td><td>Hipertensión no controlada</td><td><span class="tag tag-warn">ALTA</span></td><td>Na &lt;2,000 mg/día; control de volumen; reducción de estrés</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECCIÓN 2 – REQUERIMIENTOS
+════════════════════════════════════════════════ -->
+<div class="section" id="reqs">
+
+  <h2 class="sec-title">2. Cálculo de Requerimientos Nutricionales</h2>
+
+  <div class="alert-box info">
+    <div class="alert-title">ℹ Peso de referencia para todos los cálculos</div>
+    Se utiliza el <strong>peso seco estimado: 62 kg</strong> (peso actual 66 kg menos retención hídrica ~4 kg, confirmado por edema maleolar +/++ y ganancia interdialítica excesiva). Conforme KDOQI 2020 y ESPEN 2023.
+  </div>
+
+  <h3 class="sub-title">2.1 Energía</h3>
+  <div class="calc-box">
+Fórmula: 30–35 kcal/kg/día (KDOQI 2020 para HD con DM2)
+Rango: 30 × 62 = 1,860 kcal/día
+        35 × 62 = 2,170 kcal/día
+<span class="result">➜ META: 1,900–2,000 kcal/día</span>
+(Se escoge el extremo inferior por hiperglucemia severa y necesidad de
+ control de peso, evitando hipoglucemia durante HD)
+  </div>
+  <p class="card" style="padding:.7rem 1rem;font-size:12.5px;">
+    <strong>Justificación:</strong> ESPEN 2023 recomienda 30–35 kcal/kg en pacientes en HD. Con DM2 y hiperglucemia, se prioriza el rango conservador (30–32 kcal/kg). La distribución de macronutrimentos buscará minimizar picos glucémicos sin comprometer el balance energético, previniendo catabolismo proteico (que elevaría aún más urea y BUN).
+  </p>
+
+  <h3 class="sub-title">2.2 Proteína</h3>
+  <div class="calc-box">
+Recomendación KDOQI/ESPEN para HD: 1.2–1.4 g/kg/día
+Mínimo: 1.2 × 62 = 74.4 g/día
+Óptimo: 1.3 × 62 = 80.6 g/día
+<span class="result">➜ META: 75–80 g/día (≥50% de alto valor biológico: huevo, pollo sin piel, pescado)</span>
+  </div>
+  <p class="card" style="padding:.7rem 1rem;font-size:12.5px;">
+    <strong>Justificación:</strong> La HD induce pérdidas de aminoácidos (~10–12 g/sesión). El BUN elevado no indica reducción proteica, sino mejor adecuación dialítica. Las proteínas de alto valor biológico minimizan la carga de nitrógeno residual. Limitar proteínas vegetales por su alto contenido de fósforo inorgánico y potasio.
+  </p>
+
+  <h3 class="sub-title">2.3 Lípidos</h3>
+  <div class="calc-box">
+% de energía: 25–35% del VET
+Objetivo: 30% × 1,950 kcal = 585 kcal ÷ 9 = 65 g lípidos/día
+AGS: &lt;7% VET → &lt;15 g/día
+AGM: 15–20% VET (aceite de oliva, aguacate)
+AGP ω-3: &gt;0.5 g/día (pescado 2× semana — precaución con K⁺)
+<span class="result">➜ META: 60–65 g lípidos/día; perfil cardioprotector</span>
+  </div>
+
+  <h3 class="sub-title">2.4 Hidratos de Carbono</h3>
+  <div class="calc-box">
+% de energía restante: 100% − 30% lípidos − 16% proteína = 54% CHO
+CHO: 0.54 × 1,950 kcal = 1,053 kcal ÷ 4 = 263 g/día
+Fibra: 20–25 g/día (preferir fibra soluble; limitar leguminosas por K⁺ y P)
+Índice glucémico: BAJO a MODERADO (&lt;70)
+Azúcares simples: &lt;5% VET (&lt;25 g/día)
+<span class="result">➜ META: 250–265 g/día CHO complejos de bajo IG</span>
+  </div>
+
+  <h3 class="sub-title">2.5 Micronutrimentos Críticos</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Nutrimento</th><th>Restricción</th><th>Cálculo / Base</th><th>Meta/día</th><th>Justificación</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Sodio</strong></td><td>Severa</td>
+        <td>KDOQI: &lt;2,000–2,300 mg/día en HD con HAS</td>
+        <td class="num">&lt;2,000 mg/día</td>
+        <td>Controla volumen, HAS y sed nocturna</td>
+      </tr>
+      <tr>
+        <td><strong>Potasio</strong></td><td>Severa</td>
+        <td>K⁺ 7.1 mmol/L → riesgo vital. Meta: &lt;2,000 mg/día (dieta + sesión HD)</td>
+        <td class="num">&lt;2,000 mg/día</td>
+        <td>Prevenir arritmias; aplicar doble cocción en verduras</td>
+      </tr>
+      <tr>
+        <td><strong>Fósforo</strong></td><td>Severa</td>
+        <td>KDOQI: 800–1,000 mg/día. Con P=5.8, meta conservadora</td>
+        <td class="num">&lt;800 mg/día</td>
+        <td>Reduce calcificaciones, prurito urémico e hiperparatiroidismo</td>
+      </tr>
+      <tr>
+        <td><strong>Calcio</strong></td><td>Moderada</td>
+        <td>No suplementar calcio elemental &gt;2,000 mg/día (incluyendo quelantes)</td>
+        <td class="num">800–1,000 mg/día</td>
+        <td>Calcitriol vigente; riesgo de hipercalcemia con quelantes cálcicos</td>
+      </tr>
+      <tr>
+        <td><strong>Líquidos</strong></td><td>Severa</td>
+        <td>Diuresis residual &lt;300 mL + 500 mL insensibles = 800 mL base<br>Meta interdialítica ≤1 kg/día → se permite hasta 800–1,000 mL/día</td>
+        <td class="num">800 mL/día</td>
+        <td>Controla sobrecarga; incluye líquidos de alimentos (~200 mL en sólidos)</td>
+      </tr>
+      <tr>
+        <td><strong>Hierro (dietético)</strong></td><td>Normal</td>
+        <td>Sulfato ferroso VO; evitar té, café cerca del medicamento</td>
+        <td class="num">8–10 mg/día dietético</td>
+        <td>Soporte de eritropoyesis; Hb 11.4 requiere mantenimiento</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 class="sub-title">2.6 Resumen de Requerimientos</h3>
+  <div class="card-grid">
+    <div class="stat-card ok"><div class="label">Energía</div><div class="value">1,950 kcal</div><div class="ref">30–32 kcal × 62 kg</div></div>
+    <div class="stat-card ok"><div class="label">Proteína</div><div class="value">75–80 g</div><div class="ref">1.2–1.3 g/kg × 62 kg</div></div>
+    <div class="stat-card ok"><div class="label">Lípidos</div><div class="value">60–65 g</div><div class="ref">30% VET</div></div>
+    <div class="stat-card ok"><div class="label">Hidratos de C.</div><div class="value">250–265 g</div><div class="ref">~54% VET; IG bajo</div></div>
+    <div class="stat-card alert"><div class="label">Potasio</div><div class="value">&lt;2,000 mg</div><div class="ref">K⁺ 7.1 mmol/L</div></div>
+    <div class="stat-card alert"><div class="label">Fósforo</div><div class="value">&lt;800 mg</div><div class="ref">P 5.8 mg/dL</div></div>
+    <div class="stat-card warn"><div class="label">Sodio</div><div class="value">&lt;2,000 mg</div><div class="ref">HAS + sobrecarga</div></div>
+    <div class="stat-card alert"><div class="label">Líquidos</div><div class="value">800 mL/día</div><div class="ref">Diuresis &lt;300 mL</div></div>
+  </div>
+
+  <!-- SMAE equivalentes -->
+  <h3 class="sub-title">2.7 Distribución en Equivalentes SMAE</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr>
+      <th>Grupo SMAE</th><th>Equiv./día</th><th>Energía (kcal)</th><th>Proteína (g)</th><th>CHO (g)</th><th>Lípidos (g)</th>
+      <th>Restricción ERC</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>Cereales sin grasa</td><td class="num">6</td><td class="num">420</td><td class="num">12</td><td class="num">90</td><td class="num">0</td><td>Sin sal; tortilla, arroz, avena — preferir sin adición de sal</td></tr>
+      <tr><td>Leguminosas</td><td class="num">0.5</td><td class="num">60</td><td class="num">4</td><td class="num">10</td><td class="num">0</td><td><strong>Limitar</strong>: alto K⁺ y P; máx ½ eq/día con doble cocción</td></tr>
+      <tr><td>Verduras</td><td class="num">3</td><td class="num">75</td><td class="num">6</td><td class="num">15</td><td class="num">0</td><td><strong>Doble cocción obligatoria</strong>; seleccionar bajas en K⁺</td></tr>
+      <tr><td>Frutas</td><td class="num">2</td><td class="num">120</td><td class="num">0</td><td class="num">30</td><td class="num">0</td><td>Seleccionar bajas en K⁺ (manzana, pera, fresa, arándano)</td></tr>
+      <tr><td>Leche descremada</td><td class="num">0.5</td><td class="num">45</td><td class="num">4</td><td class="num">6</td><td class="num">0</td><td><strong>Limitar</strong>: alto P y K⁺; ½ eq/día máx</td></tr>
+      <tr><td>Carne muy baja grasa</td><td class="num">5</td><td class="num">350</td><td class="num">35</td><td class="num">0</td><td class="num">15</td><td>Preferir pollo, pescado bajo en K⁺ (mojarra, trucha); sin sal</td></tr>
+      <tr><td>Carne moderada en grasa</td><td class="num">1</td><td class="num">75</td><td class="num">7</td><td class="num">0</td><td class="num">5</td><td>Clara de huevo preferible; yema máx 3/semana (P)</td></tr>
+      <tr><td>Grasa sin proteína</td><td class="num">5</td><td class="num">225</td><td class="num">0</td><td class="num">0</td><td class="num">25</td><td>Aceite de oliva, canola; aguacate (con precaución K⁺)</td></tr>
+      <tr><td>Azúcares con grasa</td><td class="num">1</td><td class="num">115</td><td class="num">0</td><td class="num">15</td><td class="num">5</td><td>Mínimos; galletas bajas en sal y sin chispas de chocolate</td></tr>
+      <tr><td>Fórmula polimérica sin fibra</td><td class="num">1 env</td><td class="num">300–400</td><td class="num">10–15</td><td class="num">40–50</td><td class="num">8–12</td><td>Prescrita; suma al VET; contabilizar líquido (~200 mL)</td></tr>
+      <tr style="background:#e8f4f0;font-weight:600;">
+        <td>TOTALES estimados</td><td></td><td class="num">~1,950</td><td class="num">~78</td><td class="num">~206 + fórmula</td><td class="num">~60</td><td></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="font-size:11.5px;color:var(--gray3);margin-top:-.5rem;">*Los totales incluyen la fórmula polimérica. CHO totales con fórmula ≈ 250–260 g. Equivalentes SMAE basados en la 4.ª edición del SMAE (Pérez Lizaur 2014, actualización 2022).</p>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECCIÓN 3–4 – MENÚ Y HORARIO
+════════════════════════════════════════════════ -->
+<div class="section" id="menu">
+
+  <h2 class="sec-title">3 & 4. Menú Completo y Distribución Horaria</h2>
+
+  <div class="alert-box info">
+    <div class="alert-title">ℹ Criterios del menú</div>
+    Culturalmente adecuado para México · Práctico para trabajador con traslados &gt;3 h/día · Fraccionado en 5 tiempos · Bajo índice glucémico · Sin sal adicional · Técnica de doble cocción en verduras
+  </div>
+
+  <div class="day-tabs">
+    <button class="day-btn active" onclick="showDay('hd',this)">📅 Día con Hemodiálisis (Lun/Mié/Vie)</button>
+    <button class="day-btn" onclick="showDay('nohd',this)">📅 Día sin Hemodiálisis (Mar/Jue/Sáb/Dom)</button>
+  </div>
+
+  <!-- DÍA CON HD -->
+  <div class="menu-day active" id="hd">
+
+    <div class="alert-box warning" style="margin-bottom:1rem;">
+      <div class="alert-title">⚠ Día de HD — Pautas especiales</div>
+      Desayuno <strong>antes</strong> de la sesión (60–90 min previos) para evitar hipoglucemia intradialítica.
+      <strong>NO</strong> comer durante la sesión. Comida principal <strong>al llegar a casa</strong>. Insulina glargina nocturna como prescrita.
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-header">
+        <span class="meal-name">🌅 Desayuno (PRE-HD)</span>
+        <span class="meal-time">06:30–07:00 h</span>
+      </div>
+      <div class="meal-body">
+        <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Alimento</th><th>Medida casera</th><th>Cantidad</th><th>Equiv. SMAE</th><th>Obs.</th></tr></thead>
+          <tbody>
+            <tr><td>Tortilla de maíz nixtamalizada</td><td>2 piezas chicas (15 cm)</td><td>60 g</td><td>2 cereales</td><td>Sin sal; recalentar sin grasa</td></tr>
+            <tr><td>Clara de huevo revuelta</td><td>3 claras</td><td>90 g</td><td>1 carne muy baja grasa</td><td>Sin sal; usar spray vegetal</td></tr>
+            <tr><td>Chayote cocido (doble cocción)</td><td>¾ taza picado</td><td>150 g</td><td>1 verdura</td><td>Hervir 2 veces, tirar agua</td></tr>
+            <tr><td>Aceite de oliva virgen extra</td><td>1 cdita</td><td>5 mL</td><td>1 grasa</td><td>Para cocinar claras</td></tr>
+            <tr><td>Manzana verde</td><td>1 pieza pequeña</td><td>90 g</td><td>1 fruta</td><td>Baja en K⁺; con cáscara lavada</td></tr>
+            <tr><td>Agua simple o infusión de manzanilla sin azúcar</td><td>1 taza</td><td>150 mL</td><td>—</td><td>Contar en restricción hídrica</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p style="font-size:11.5px;margin-top:.4rem;"><strong>Aporte estimado:</strong> ~420 kcal · 18 g proteína · 60 g CHO · 10 g lípidos · K⁺ ~320 mg · P ~140 mg · Na ~100 mg</p>
+      </div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-header">
+        <span class="meal-name">🏥 Sesión de Hemodiálisis</span>
+        <span class="meal-time">08:00–12:00 h (aprox.)</span>
+      </div>
+      <div class="meal-body">
+        <div class="alert-box danger" style="margin:0;">
+          <div class="alert-title">🚫 NO comer ni beber durante la sesión</div>
+          Riesgo de hipotensión intradialítica. Si hay hipoglucemia: consultar al médico de guardia para protocolo institucional (no ingerir alimentos ni líquidos sin indicación médica durante la sesión).
+        </div>
+      </div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-header">
+        <span class="meal-name">🍽 Almuerzo / Colación POST-HD</span>
+        <span class="meal-time">12:30–13:00 h</span>
+      </div>
+      <div class="meal-body">
+        <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Alimento</th><th>Medida casera</th><th>Cantidad</th><th>Equiv. SMAE</th><th>Obs.</th></tr></thead>
+          <tbody>
+            <tr><td>Arroz blanco cocido (preparado bajo en sal)</td><td>½ taza</td><td>80 g</td><td>1 cereal</td><td>Sin sal; lavado antes de cocción</td></tr>
+            <tr><td>Pechuga de pollo a la plancha sin piel</td><td>1 pieza mediana</td><td>90 g</td><td>2 carne muy baja grasa</td><td>Sin sal; marinar con limón y ajo</td></tr>
+            <tr><td>Calabacita cocida (doble cocción)</td><td>1 taza</td><td>150 g</td><td>1 verdura</td><td>Hervir 2 veces, escurrir</td></tr>
+            <tr><td>Aceite de canola</td><td>1 cdita</td><td>5 mL</td><td>1 grasa</td><td>Para aderezar</td></tr>
+            <tr><td>Fresa fresca</td><td>½ taza</td><td>75 g</td><td>1 fruta</td><td>K⁺ bajo; sin azúcar añadida</td></tr>
+            <tr><td>Agua simple</td><td>1 taza</td><td>150 mL</td><td>—</td><td>Dentro de cuota hídrica</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p style="font-size:11.5px;margin-top:.4rem;"><strong>Aporte estimado:</strong> ~430 kcal · 22 g proteína · 55 g CHO · 10 g lípidos · K⁺ ~350 mg · P ~180 mg · Na ~90 mg</p>
+      </div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-header">
+        <span class="meal-name">🍱 Colación tarde (en traslado – portable)</span>
+        <span class="meal-time">16:00 h</span>
+      </div>
+      <div class="meal-body">
+        <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Alimento</th><th>Medida casera</th><th>Cantidad</th><th>Equiv. SMAE</th><th>Obs.</th></tr></thead>
+          <tbody>
+            <tr><td>Galletas de arroz sin sal</td><td>4 piezas</td><td>30 g</td><td>1 cereal</td><td>Llevar en bolsa hermética</td></tr>
+            <tr><td>Clara de huevo cocida (huevo duro, solo clara)</td><td>2 claras</td><td>60 g</td><td>1 carne muy baja grasa</td><td>Preparar en casa</td></tr>
+            <tr><td>Pepino en rodajas (crudo)</td><td>½ taza</td><td>75 g</td><td>½ verdura</td><td>K⁺ muy bajo; no requiere doble cocción</td></tr>
+            <tr><td>Agua en termo personal</td><td>150 mL</td><td>150 mL</td><td>—</td><td>De la cuota diaria</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p style="font-size:11.5px;margin-top:.4rem;"><strong>Aporte estimado:</strong> ~215 kcal · 10 g proteína · 30 g CHO · 3 g lípidos · K⁺ ~130 mg · P ~80 mg · Na ~40 mg</p>
+      </div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-header">
+        <span class="meal-name">🌙 Cena</span>
+        <span class="meal-time">19:30–20:00 h</span>
+      </div>
+      <div class="meal-body">
+        <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Alimento</th><th>Medida casera</th><th>Cantidad</th><th>Equiv. SMAE</th><th>Obs.</th></tr></thead>
+          <tbody>
+            <tr><td>Tortilla de maíz</td><td>2 piezas chicas</td><td>60 g</td><td>2 cereales</td><td>Taco con relleno descrito</td></tr>
+            <tr><td>Filete de mojarra al vapor</td><td>1 pieza mediana</td><td>90 g</td><td>2 carne muy baja grasa</td><td>Sin sal; ajo y hierbas</td></tr>
+            <tr><td>Ejotes cocidos (doble cocción)</td><td>½ taza</td><td>75 g</td><td>½ verdura</td><td>K⁺ moderado; doble cocción</td></tr>
+            <tr><td>Aceite de oliva</td><td>2 cditas</td><td>10 mL</td><td>2 grasa</td><td>Aderezar verdura y tortilla</td></tr>
+            <tr><td>Agua de jamaica sin azúcar (fría o caliente)</td><td>¾ taza</td><td>125 mL</td><td>—</td><td>Infusión baja en K⁺</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p style="font-size:11.5px;margin-top:.4rem;"><strong>Aporte estimado:</strong> ~430 kcal · 22 g proteína · 45 g CHO · 12 g lípidos · K⁺ ~280 mg · P ~190 mg · Na ~70 mg</p>
+      </div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-header">
+        <span class="meal-name">💊 Toma nocturna + Fórmula polimérica</span>
+        <span class="meal-time">21:00 h</span>
+      </div>
+      <div class="meal-body">
+        <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Alimento/Fármaco</th><th>Indicación</th><th>Líquido</th></tr></thead>
+          <tbody>
+            <tr><td>Fórmula polimérica sin fibra (1 envase prescrito)</td><td>Suplemento nutricional oral</td><td>200 mL (contabilizar)</td></tr>
+            <tr><td>Insulina glargina 27 UI SC</td><td>Según prescripción médica</td><td>—</td></tr>
+            <tr><td>Ácido fólico 5 mg</td><td>Con mínimo líquido</td><td>30 mL</td></tr>
+            <tr><td>Calcitriol 0.25 µg</td><td>Con mínimo líquido</td><td>—</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p style="font-size:11.5px;margin-top:.4rem;"><strong>Fórmula aporta estimado:</strong> ~300–380 kcal · 12–15 g proteína · 45–55 g CHO · 8–12 g lípidos</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:1rem;">
+      <strong>TOTALES DÍA HD (estimado):</strong>
+      <div class="tbl-wrap" style="margin-top:.5rem;">
+      <table>
+        <thead><tr><th>Nutriente</th><th>Aportado</th><th>Meta</th><th>Cumplimiento</th></tr></thead>
+        <tbody>
+          <tr><td>Energía</td><td class="num">~1,795–1,875 kcal</td><td class="num">1,900–2,000</td><td><span class="tag tag-ok">✓ ~95%</span></td></tr>
+          <tr><td>Proteína</td><td class="num">~74–84 g</td><td class="num">75–80 g</td><td><span class="tag tag-ok">✓ CUMPLE</span></td></tr>
+          <tr><td>Potasio</td><td class="num">~1,080–1,300 mg</td><td class="num">&lt;2,000 mg</td><td><span class="tag tag-ok">✓ CUMPLE</span></td></tr>
+          <tr><td>Fósforo</td><td class="num">~590–720 mg</td><td class="num">&lt;800 mg</td><td><span class="tag tag-ok">✓ CUMPLE</span></td></tr>
+          <tr><td>Sodio</td><td class="num">~300–400 mg dieta + fórmula</td><td class="num">&lt;2,000 mg</td><td><span class="tag tag-ok">✓ AMPLIO</span></td></tr>
+          <tr><td>Líquidos</td><td class="num">~630 mL bebidas + ~200 mL en alimentos</td><td class="num">800 mL</td><td><span class="tag tag-ok">✓ CUMPLE</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+  </div><!-- /hd -->
+
+  <!-- DÍA SIN HD -->
+  <div class="menu-day" id="nohd">
+
+    <div class="alert-box info" style="margin-bottom:1rem;">
+      <div class="alert-title">ℹ Día sin HD — Pautas</div>
+      Mayor restricción de potasio y fósforo (no hay sesión para removerlos). Mantener distribución en 5 tiempos. Continuar restricción hídrica estricta.
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-header">
+        <span class="meal-name">🌅 Desayuno</span>
+        <span class="meal-time">07:30 h</span>
+      </div>
+      <div class="meal-body">
+        <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Alimento</th><th>Medida casera</th><th>Cantidad</th><th>Equiv. SMAE</th><th>Obs.</th></tr></thead>
+          <tbody>
+            <tr><td>Avena en hojuelas cocida en agua</td><td>½ taza cruda → 1 taza cocida</td><td>40 g cruda</td><td>2 cereales</td><td>Sin leche; baja en K⁺ vs. leche entera</td></tr>
+            <tr><td>Claras de huevo pochadas</td><td>2 claras</td><td>60 g</td><td>1 carne muy baja grasa</td><td>Sin sal</td></tr>
+            <tr><td>Nopalito cocido (doble cocción)</td><td>½ taza</td><td>60 g</td><td>½ verdura</td><td>Herbir 2 veces; K⁺ reducido</td></tr>
+            <tr><td>Aceite de oliva</td><td>1 cdita</td><td>5 mL</td><td>1 grasa</td><td></td></tr>
+            <tr><td>Pera sin cáscara</td><td>1 pieza mediana</td><td>110 g</td><td>1 fruta</td><td>Baja en K⁺ y P</td></tr>
+            <tr><td>Infusión de canela sin azúcar</td><td>¾ taza</td><td>125 mL</td><td>—</td><td>Cuota hídrica</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p style="font-size:11.5px;margin-top:.4rem;"><strong>Aporte estimado:</strong> ~380 kcal · 14 g proteína · 55 g CHO · 8 g lípidos · K⁺ ~220 mg · P ~130 mg · Na ~80 mg</p>
+      </div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-header">
+        <span class="meal-name">🍱 Colación matutina (en traslado)</span>
+        <span class="meal-time">10:30 h</span>
+      </div>
+      <div class="meal-body">
+        <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Alimento</th><th>Medida casera</th><th>Cantidad</th><th>Equiv. SMAE</th><th>Obs.</th></tr></thead>
+          <tbody>
+            <tr><td>Galletas de arroz sin sal</td><td>4 piezas</td><td>30 g</td><td>1 cereal</td><td>Portable; bajo K⁺ y P</td></tr>
+            <tr><td>Mantequilla de cacahuate natural sin sal</td><td>1 cda (15 g)</td><td>15 g</td><td>1 grasa + 0.5 carne</td><td><em>Solo 1 cda</em>; moderada en P y K⁺</td></tr>
+            <tr><td>Agua en termo</td><td>150 mL</td><td>150 mL</td><td>—</td><td>Cuota hídrica</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p style="font-size:11.5px;margin-top:.4rem;"><strong>Aporte estimado:</strong> ~195 kcal · 5 g proteína · 20 g CHO · 9 g lípidos · K⁺ ~120 mg · P ~70 mg · Na ~20 mg</p>
+      </div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-header">
+        <span class="meal-name">🍽 Comida principal</span>
+        <span class="meal-time">13:30 h</span>
+      </div>
+      <div class="meal-body">
+        <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Alimento</th><th>Medida casera</th><th>Cantidad</th><th>Equiv. SMAE</th><th>Obs.</th></tr></thead>
+          <tbody>
+            <tr><td>Arroz blanco cocido lavado</td><td>¾ taza</td><td>120 g</td><td>1.5 cereales</td><td>Lavado antes de cocción reduce almidón resistente</td></tr>
+            <tr><td>Tortilla de maíz</td><td>1 pieza chica</td><td>30 g</td><td>1 cereal</td><td></td></tr>
+            <tr><td>Pechuga de pollo deshebrada a la plancha</td><td>1 taza deshebrada</td><td>105 g</td><td>2.5 carne muy baja grasa</td><td>Sin sal; limón, ajo y epazote</td></tr>
+            <tr><td>Chayote + zanahoria baby cocidos (doble cocción)</td><td>1 taza mezcla</td><td>150 g</td><td>1 verdura</td><td>Doble cocción obligatoria</td></tr>
+            <tr><td>Aceite de canola</td><td>2 cditas</td><td>10 mL</td><td>2 grasa</td><td></td></tr>
+            <tr><td>Arándanos frescos</td><td>¼ taza</td><td>50 g</td><td>1 fruta</td><td>Muy baja en K⁺; antioxidantes</td></tr>
+            <tr><td>Agua simple</td><td>¾ taza</td><td>125 mL</td><td>—</td><td>Cuota hídrica</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p style="font-size:11.5px;margin-top:.4rem;"><strong>Aporte estimado:</strong> ~560 kcal · 24 g proteína · 72 g CHO · 12 g lípidos · K⁺ ~380 mg · P ~210 mg · Na ~100 mg</p>
+      </div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-header">
+        <span class="meal-name">🍎 Colación vespertina</span>
+        <span class="meal-time">17:00 h</span>
+      </div>
+      <div class="meal-body">
+        <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Alimento</th><th>Medida casera</th><th>Cantidad</th><th>Equiv. SMAE</th><th>Obs.</th></tr></thead>
+          <tbody>
+            <tr><td>Manzana verde sin cáscara en gajos</td><td>1 pieza chica</td><td>90 g</td><td>1 fruta</td><td>Mantener sin cáscara (reduce P)</td></tr>
+            <tr><td>Clara de huevo cocida dura</td><td>2 claras</td><td>60 g</td><td>1 carne muy baja grasa</td><td>Portable; preparar en casa</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p style="font-size:11.5px;margin-top:.4rem;"><strong>Aporte estimado:</strong> ~120 kcal · 7 g proteína · 15 g CHO · 1 g lípidos · K⁺ ~130 mg · P ~60 mg</p>
+      </div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-header">
+        <span class="meal-name">🌙 Cena + Fórmula</span>
+        <span class="meal-time">19:30–20:00 h</span>
+      </div>
+      <div class="meal-body">
+        <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Alimento</th><th>Medida casera</th><th>Cantidad</th><th>Equiv. SMAE</th><th>Obs.</th></tr></thead>
+          <tbody>
+            <tr><td>Tortilla de maíz</td><td>2 piezas chicas</td><td>60 g</td><td>2 cereales</td><td></td></tr>
+            <tr><td>Atún en agua escurrido y enjuagado</td><td>½ lata (60 g drenado)</td><td>60 g</td><td>1.5 carne muy baja grasa</td><td>Enjuagar 2 veces para reducir Na y K⁺</td></tr>
+            <tr><td>Pepino + jícama crudos en tiras</td><td>½ taza mezcla</td><td>80 g</td><td>½ verdura</td><td>Muy bajos en K⁺; sin sal</td></tr>
+            <tr><td>Aceite de oliva + limón</td><td>1 cdita aceite</td><td>5 mL</td><td>1 grasa</td><td>Sin sal ni salsa</td></tr>
+            <tr><td>Fórmula polimérica sin fibra (1 envase)</td><td>1 envase</td><td>200 mL</td><td>Prescrita</td><td>Contabilizar en líquidos</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p style="font-size:11.5px;margin-top:.4rem;"><strong>Aporte estimado:</strong> ~590 kcal · 25 g proteína + fórmula · 65 g CHO + fórmula · 12 g lípidos · K⁺ ~280 mg · P ~190 mg</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:1rem;">
+      <strong>TOTALES DÍA SIN HD (estimado):</strong>
+      <div class="tbl-wrap" style="margin-top:.5rem;">
+      <table>
+        <thead><tr><th>Nutriente</th><th>Aportado</th><th>Meta</th><th>Cumplimiento</th></tr></thead>
+        <tbody>
+          <tr><td>Energía</td><td class="num">~1,845–1,930 kcal</td><td class="num">1,900–2,000</td><td><span class="tag tag-ok">✓ ~96%</span></td></tr>
+          <tr><td>Proteína</td><td class="num">~75–90 g</td><td class="num">75–80 g</td><td><span class="tag tag-ok">✓ CUMPLE</span></td></tr>
+          <tr><td>Potasio</td><td class="num">~1,130–1,350 mg</td><td class="num">&lt;2,000 mg</td><td><span class="tag tag-ok">✓ CUMPLE</span></td></tr>
+          <tr><td>Fósforo</td><td class="num">~660–790 mg</td><td class="num">&lt;800 mg</td><td><span class="tag tag-ok">✓ CUMPLE</span></td></tr>
+          <tr><td>Sodio</td><td class="num">~300–450 mg</td><td class="num">&lt;2,000 mg</td><td><span class="tag tag-ok">✓ AMPLIO</span></td></tr>
+          <tr><td>Líquidos</td><td class="num">~600 mL bebidas + ~200 mL en sólidos</td><td class="num">800 mL</td><td><span class="tag tag-ok">✓ CUMPLE</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+  </div><!-- /nohd -->
+
+  <!-- TABLA RESUMEN SMAE -->
+  <h2 class="sec-title" style="margin-top:1.8rem;">Tabla Resumen SMAE – Día tipo</h2>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr>
+      <th>Grupo SMAE</th><th>Equiv.</th><th>Energía (kcal)</th><th>Proteína (g)</th><th>CHO (g)</th><th>Lípidos (g)</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>Cereales sin grasa (tortilla, arroz, avena, galletas arroz)</td><td class="num">6</td><td class="num">420</td><td class="num">12</td><td class="num">90</td><td class="num">0</td></tr>
+      <tr><td>Leguminosas (frijol — mínimo, doble cocción)</td><td class="num">0.5</td><td class="num">60</td><td class="num">4</td><td class="num">10</td><td class="num">0</td></tr>
+      <tr><td>Verduras (doble cocción; bajas en K⁺)</td><td class="num">3</td><td class="num">75</td><td class="num">6</td><td class="num">15</td><td class="num">0</td></tr>
+      <tr><td>Frutas (bajas en K⁺: manzana, pera, fresa, arándano)</td><td class="num">3</td><td class="num">180</td><td class="num">0</td><td class="num">45</td><td class="num">0</td></tr>
+      <tr><td>Leche descremada</td><td class="num">0.5</td><td class="num">45</td><td class="num">4</td><td class="num">6</td><td class="num">0</td></tr>
+      <tr><td>Carne muy baja en grasa (pollo, pescado, claras)</td><td class="num">5</td><td class="num">350</td><td class="num">35</td><td class="num">0</td><td class="num">15</td></tr>
+      <tr><td>Carne moderada en grasa (huevo entero — máx 3/semana)</td><td class="num">0.5</td><td class="num">38</td><td class="num">3.5</td><td class="num">0</td><td class="num">2.5</td></tr>
+      <tr><td>Grasa sin proteína (aceite oliva, canola)</td><td class="num">5</td><td class="num">225</td><td class="num">0</td><td class="num">0</td><td class="num">25</td></tr>
+      <tr><td>Azúcares con grasa (mínimo; galleta arroz)</td><td class="num">0.5</td><td class="num">57</td><td class="num">0</td><td class="num">7.5</td><td class="num">2.5</td></tr>
+      <tr><td>Fórmula polimérica sin fibra (prescrita)</td><td class="num">1 env</td><td class="num">350</td><td class="num">13</td><td class="num">50</td><td class="num">10</td></tr>
+      <tr style="background:#e8f4f0;font-weight:700;">
+        <td>TOTAL</td><td></td><td class="num">1,800–1,950</td><td class="num">77.5</td><td class="num">223.5 + fórmula</td><td class="num">55</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="font-size:11.5px;color:var(--gray3);">CHO totales incluyendo fórmula: ~270 g. Energía total con fórmula: ~1,950–2,000 kcal. Proteína total: ~77–90 g/día según variación del menú.</p>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECCIÓN 5 – HIDRATACIÓN
+════════════════════════════════════════════════ -->
+<div class="section" id="hidro">
+
+  <h2 class="sec-title">5. Plan de Hidratación Detallado</h2>
+
+  <div class="alert-box danger">
+    <div class="alert-title">🚨 Restricción hídrica CRÍTICA</div>
+    Meta total: <strong>800 mL/día</strong> (incluye líquidos de alimentos ~200 mL + bebidas ~600 mL).
+    Diuresis residual &lt;300 mL/día + pérdidas insensibles ~500 mL = necesidad fisiológica ≤800 mL.
+    Ganancia interdialítica ideal: ≤1.86 kg (≤3% de peso seco 62 kg).
+  </div>
+
+  <h3 class="sub-title">5.1 Distribución Horaria de Líquidos — Día con HD</h3>
+  <div class="card">
+
+    <div class="hydro-bar"><div class="hydro-time">06:30</div><div class="hydro-track"><div class="hydro-fill" style="width:25%"></div></div><div class="hydro-ml">150 mL</div></div>
+    <p style="font-size:11px;color:var(--gray3);margin-left:60px;margin-bottom:.5rem;">Agua o infusión de manzanilla sin azúcar (con desayuno)</p>
+
+    <div class="hydro-bar"><div class="hydro-time">08:00–12:00</div><div class="hydro-track"><div class="hydro-fill" style="width:0%"></div></div><div class="hydro-ml">0 mL</div></div>
+    <p style="font-size:11px;color:var(--rose);margin-left:60px;margin-bottom:.5rem;"><strong>SESIÓN HD — CERO líquidos</strong></p>
+
+    <div class="hydro-bar"><div class="hydro-time">12:30</div><div class="hydro-track"><div class="hydro-fill" style="width:25%"></div></div><div class="hydro-ml">150 mL</div></div>
+    <p style="font-size:11px;color:var(--gray3);margin-left:60px;margin-bottom:.5rem;">Agua simple post-HD (con almuerzo)</p>
+
+    <div class="hydro-bar"><div class="hydro-time">16:00</div><div class="hydro-track"><div class="hydro-fill" style="width:25%"></div></div><div class="hydro-ml">150 mL</div></div>
+    <p style="font-size:11px;color:var(--gray3);margin-left:60px;margin-bottom:.5rem;">Agua en termo (colación tarde, en traslado)</p>
+
+    <div class="hydro-bar"><div class="hydro-time">19:30</div><div class="hydro-track"><div class="hydro-fill" style="width:21%"></div></div><div class="hydro-ml">125 mL</div></div>
+    <p style="font-size:11px;color:var(--gray3);margin-left:60px;margin-bottom:.5rem;">Agua de jamaica sin azúcar (con cena)</p>
+
+    <div class="hydro-bar"><div class="hydro-time">21:00</div><div class="hydro-track"><div class="hydro-fill" style="width:17%"></div></div><div class="hydro-ml">30 mL</div></div>
+    <p style="font-size:11px;color:var(--gray3);margin-left:60px;margin-bottom:.5rem;">Para medicamentos nocturnos</p>
+
+    <div style="margin-top:.7rem;padding-top:.7rem;border-top:1px solid var(--border);">
+      <strong>Total bebidas: ~605 mL + fórmula 200 mL = 805 mL</strong><br>
+      <span style="font-size:11.5px;color:var(--gray3);">Líquidos en alimentos sólidos: ~150–200 mL adicionales (verduras, frutas) → total ~1,000 mL</span>
+    </div>
+  </div>
+
+  <h3 class="sub-title">5.2 Distribución Horaria de Líquidos — Día sin HD</h3>
+  <div class="card">
+    <div class="hydro-bar"><div class="hydro-time">07:30</div><div class="hydro-track"><div class="hydro-fill" style="width:21%"></div></div><div class="hydro-ml">125 mL</div></div>
+    <p style="font-size:11px;color:var(--gray3);margin-left:60px;margin-bottom:.5rem;">Infusión de canela sin azúcar (desayuno)</p>
+
+    <div class="hydro-bar"><div class="hydro-time">10:30</div><div class="hydro-track"><div class="hydro-fill" style="width:25%"></div></div><div class="hydro-ml">150 mL</div></div>
+    <p style="font-size:11px;color:var(--gray3);margin-left:60px;margin-bottom:.5rem;">Agua en termo (colación matutina)</p>
+
+    <div class="hydro-bar"><div class="hydro-time">13:30</div><div class="hydro-track"><div class="hydro-fill" style="width:21%"></div></div><div class="hydro-ml">125 mL</div></div>
+    <p style="font-size:11px;color:var(--gray3);margin-left:60px;margin-bottom:.5rem;">Agua simple (comida principal)</p>
+
+    <div class="hydro-bar"><div class="hydro-time">17:00</div><div class="hydro-track"><div class="hydro-fill" style="width:0%"></div></div><div class="hydro-ml">0 mL</div></div>
+    <p style="font-size:11px;color:var(--gray3);margin-left:60px;margin-bottom:.5rem;">Colación sin bebida adicional (fruta aporta líquido)</p>
+
+    <div class="hydro-bar"><div class="hydro-time">19:30</div><div class="hydro-track"><div class="hydro-fill" style="width:17%"></div></div><div class="hydro-ml">200 mL</div></div>
+    <p style="font-size:11px;color:var(--gray3);margin-left:60px;margin-bottom:.5rem;">Fórmula polimérica (cena)</p>
+
+    <div class="hydro-bar"><div class="hydro-time">21:00</div><div class="hydro-track"><div class="hydro-fill" style="width:5%"></div></div><div class="hydro-ml">30 mL</div></div>
+    <p style="font-size:11px;color:var(--gray3);margin-left:60px;margin-bottom:.5rem;">Para medicamentos</p>
+
+    <div style="margin-top:.7rem;padding-top:.7rem;border-top:1px solid var(--border);">
+      <strong>Total bebidas + fórmula: ~630 mL + líquidos en alimentos ~200 mL = ~830 mL</strong>
+    </div>
+  </div>
+
+  <h3 class="sub-title">5.3 Estrategias para Controlar la Sed</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Estrategia</th><th>Mecanismo</th><th>Aplicación práctica</th></tr></thead>
+    <tbody>
+      <tr><td>Enjuagues bucales con agua fría (no tragar)</td><td>Estimula receptores orales de hidratación</td><td>Mañana y antes de dormir; 10 mL sin tragar</td></tr>
+      <tr><td>Cubos de hielo (contar en cuota)</td><td>1 cubo ≈ 30 mL; mayor duración en boca</td><td>Máx 4–5 cubos/día como parte de los 600 mL</td></tr>
+      <tr><td>Reducir sodio en dieta</td><td>Reduce osmolaridad plasmática → menos sed</td><td>Eliminar sal de mesa, embutidos, enlatados sin enjuagar</td></tr>
+      <tr><td>Caramelos sin azúcar (ácidos)</td><td>Estimula salivación</td><td>1–2 piezas en traslado; sin azúcar (control glucémico)</td></tr>
+      <tr><td>Limón en agua helada</td><td>Palatabilidad del agua fría</td><td>Incluir en cuota; limón bajo en K⁺ en poca cantidad</td></tr>
+      <tr><td>Refrigeración de bebidas</td><td>El frío reduce percepción de sed</td><td>Termo con hielo; llevar agua fría en traslados</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="alert-box warning">
+    <div class="alert-title">⚠ Sed nocturna — causa principal</div>
+    La hiponatremia dilucional (Na 132) paradójicamente causa sed por activación del sistema renina-angiotensina. La reducción de sodio dietético (no restricción excesiva) y el control de volumen corregirán este síntoma gradualmente. Evitar acceso a bebidas durante la noche; preparar el vaso de agua de la mañana con hielo la noche anterior.
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECCIÓN 6 – ALIMENTOS
+════════════════════════════════════════════════ -->
+<div class="section" id="foods">
+
+  <h2 class="sec-title">6. Lista de Alimentos Clasificada por ERC-HD</h2>
+
+  <div class="food-col">
+
+    <div class="food-group green">
+      <h4>✅ PERMITIDOS (sin restricción adicional)</h4>
+      <p style="font-size:10.5px;color:var(--gray3);margin-bottom:.5rem;">Bajos en K⁺, P y Na · Consumir libremente dentro de equivalentes</p>
+      <ul class="custom" style="font-size:11.5px;">
+        <li>Claras de huevo (sin yema)</li>
+        <li>Pechuga de pollo sin piel, sin sal</li>
+        <li>Mojarra, trucha, tilapia (sin sal)</li>
+        <li>Arroz blanco cocido sin sal</li>
+        <li>Tortilla de maíz (sin sal)</li>
+        <li>Avena en agua (sin leche)</li>
+        <li>Galletas de arroz sin sal</li>
+        <li>Manzana verde o roja sin cáscara</li>
+        <li>Pera sin cáscara</li>
+        <li>Fresa fresca</li>
+        <li>Arándano fresco</li>
+        <li>Uva (½ taza máx)</li>
+        <li>Pepino crudo</li>
+        <li>Chayote (doble cocción)</li>
+        <li>Calabacita (doble cocción)</li>
+        <li>Cebolla cocida (doble cocción)</li>
+        <li>Jícama cruda</li>
+        <li>Lechuga orejona (cruda; pequeña porción)</li>
+        <li>Aceite de oliva virgen extra</li>
+        <li>Aceite de canola</li>
+        <li>Ajo, epazote, hierbas frescas</li>
+        <li>Limón (jugo; cantidad pequeña)</li>
+        <li>Vinagre blanco (aderezo)</li>
+        <li>Agua simple, infusiones sin azúcar</li>
+        <li>Agua de jamaica sin azúcar</li>
+      </ul>
+    </div>
+
+    <div class="food-group amber">
+      <h4>⚠ MODERADOS (porciones controladas)</h4>
+      <p style="font-size:10.5px;color:var(--gray3);margin-bottom:.5rem;">K⁺, P o Na moderados · Doble cocción cuando aplique · Máx 1 equiv/día</p>
+      <ul class="custom" style="font-size:11.5px;">
+        <li>Huevo entero (máx 3/semana — P en yema)</li>
+        <li>Atún en agua (enjuagar 2× — Na)</li>
+        <li>Nopal cocido (doble cocción — K⁺ moderado)</li>
+        <li>Ejotes cocidos (doble cocción)</li>
+        <li>Zanahoria cocida (doble cocción)</li>
+        <li>Brócoli cocido (doble cocción; 1/4 taza)</li>
+        <li>Coliflor cocida (doble cocción)</li>
+        <li>Frijol (doble cocción, solo ½ equiv — K⁺ + P)</li>
+        <li>Mantequilla de cacahuate natural sin sal (1 cda)</li>
+        <li>Aguacate (¼ pieza — K⁺ alto; con precaución)</li>
+        <li>Mango (¼ taza — K⁺ moderado)</li>
+        <li>Naranja (½ pieza — K⁺ moderado)</li>
+        <li>Leche descremada (½ taza — P y K⁺)</li>
+        <li>Queso fresco bajo en sodio (20 g — precaución P)</li>
+        <li>Pasta sin sal cocida (con arroz o tortilla; no acumular)</li>
+        <li>Pan integral sin sal (1 rebanada)</li>
+        <li>Aceite de aguacate</li>
+      </ul>
+    </div>
+
+    <div class="food-group red">
+      <h4>🚫 RESTRINGIDOS / PROHIBIDOS</h4>
+      <p style="font-size:10.5px;color:var(--gray3);margin-bottom:.5rem;">Altos en K⁺, P, Na o fosfatos aditivos · Evitar completamente</p>
+      <ul class="custom" style="font-size:11.5px;">
+        <li><strong>POTASIO MUY ALTO:</strong></li>
+        <li>Plátano, plátano macho</li>
+        <li>Papa (incluso cocida — K⁺ muy alto)</li>
+        <li>Jitomate (en salsa o crudo — concentrado)</li>
+        <li>Jugo de naranja, limón o toronja</li>
+        <li>Melón, sandía, papaya, guayaba, kiwi</li>
+        <li>Espinaca, acelga, quelites</li>
+        <li>Aguacate en grandes cantidades</li>
+        <li>Chocolate, cacao</li>
+        <li>Frutas secas y pasas</li>
+        <li><strong>FÓSFORO MUY ALTO:</strong></li>
+        <li>Lácteos enteros (leche entera, queso amarillo)</li>
+        <li>Leguminosas en grandes porciones</li>
+        <li>Nueces, almendras, semillas (en grandes cant.)</li>
+        <li>Bebidas oscuras: cola, café, cerveza oscura</li>
+        <li>Vísceras (hígado, riñón, cerebro)</li>
+        <li>Sardinas, camarón, cangrejo</li>
+        <li><strong>SODIO MUY ALTO:</strong></li>
+        <li>Sal de mesa y sustitutos de sal con KCl</li>
+        <li>Embutidos: salchicha, jamón, chorizo</li>
+        <li>Enlatados sin enjuagar</li>
+        <li>Sopas de sobre y sazonadores</li>
+        <li>Salsas comerciales, catsup, mostaza</li>
+        <li>Botanas saladas (papas fritas, chicharrón)</li>
+        <li>Quesos maduros (manchego, gouda)</li>
+        <li><strong>MIXTO (K⁺ + P + Na altos):</strong></li>
+        <li>Comida rápida (hamburguesas, pizza, tacos de tripa)</li>
+        <li>Frituras industriales</li>
+        <li>Bebidas energéticas y deportivas</li>
+        <li>Suplementos de potasio o magnesio sin prescripción</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <h3 class="sub-title">Técnica de Doble Cocción para Reducir Potasio</h3>
+  <div class="card">
+    <ol style="margin-left:1.2rem;line-height:2;">
+      <li>Pelar y cortar la verdura en trozos pequeños (aumenta superficie de lixiviación).</li>
+      <li>Hervir en agua abundante (5× volumen de verdura) durante 10 min. <strong>Tirar esa agua.</strong></li>
+      <li>Volver a hervir en agua fresca otros 10–15 min hasta cocción deseada. <strong>Tirar esa agua.</strong></li>
+      <li>Sazonar sin sal; usar ajo, limón, epazote, orégano.</li>
+      <li>Este proceso reduce K⁺ en verduras hasta un 30–60% según el vegetal.</li>
+    </ol>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECCIÓN 7 – RECOMENDACIONES ESPECÍFICAS
+════════════════════════════════════════════════ -->
+<div class="section" id="recs">
+
+  <h2 class="sec-title">7. Recomendaciones Específicas por Comorbilidad/Síntoma</h2>
+
+  <h3 class="sub-title">7.1 Hiperglucemia (Glucosa 301 mg/dL)</h3>
+  <div class="card">
+    <ul class="custom">
+      <li>Distribuir los carbohidratos en 5 tiempos iguales (~45–55 g/tiempo principal, 15–20 g colaciones) para evitar picos postprandiales.</li>
+      <li>Seleccionar cereales de índice glucémico bajo: avena, tortilla de maíz, arroz blanco cocido y enfriado (almidón resistente).</li>
+      <li>Evitar azúcares simples: refrescos, jugos, azúcar de mesa, miel, mermelada.</li>
+      <li>Incluir fibra soluble (avena, pepino, jícama) para atenuar absorción de glucosa — sin exceder restricciones de K⁺ y P.</li>
+      <li>No omitir tiempos de comida: con insulina glargina y linagliptina, el ayuno prolongado favorece hipoglucemia.</li>
+      <li>Medir glucemia preprandial y 2 h postprandial; registrar para ajuste médico de insulina.</li>
+      <li>La hiperglucemia en HD favorece infecciones del acceso vascular; control estricto esencial.</li>
+      <li>Reportar al médico la glucosa de 301 mg/dL para posible ajuste de glargina (actualmente 27 UI).</li>
+    </ul>
+  </div>
+
+  <h3 class="sub-title">7.2 Hipertensión Arterial (150/92, picos 165/100)</h3>
+  <div class="card">
+    <ul class="custom">
+      <li>Restricción de sodio &lt;2,000 mg/día como pilar fundamental; la hipertensión en ERC-HD es 80% volumen-dependiente.</li>
+      <li>Eliminar sal de mesa, sazonadores, embutidos, alimentos enlatados sin enjuagar.</li>
+      <li>Controlar ganancia interdialítica ≤1.86 kg; la sobrecarga de volumen es la causa principal de HAS en HD.</li>
+      <li>Cocinar con ajo, limón, hierbas aromáticas (epazote, orégano, perejil) como sustitutos de sabor.</li>
+      <li><strong>NO usar sustitutos de sal con cloruro de potasio (KCl)</strong> — el potasio ya está crítico (7.1 mmol/L).</li>
+      <li>Reducir el estrés laboral (causa activación del sistema nervioso simpático); técnicas de respiración o caminata ligera.</li>
+      <li>Fármacos vigentes (Telmisartán, Nifedipino, Prazosina) son adecuados; la dieta potencia su efecto.</li>
+    </ul>
+  </div>
+
+  <h3 class="sub-title">7.3 Hiperpotasemia (K⁺ 7.1 mmol/L) — URGENCIA</h3>
+  <div class="card">
+    <div class="alert-box danger" style="margin-bottom:.8rem;">
+      <div class="alert-title">🚨 K⁺ 7.1 mmol/L = EMERGENCIA CARDÍACA POTENCIAL</div>
+      Riesgo de arritmias ventriculares y paro cardíaco. Requiere intervención inmediata nutricional + médica.
+    </div>
+    <ul class="custom">
+      <li>Restricción de potasio &lt;2,000 mg/día de inmediato.</li>
+      <li>Eliminar todos los alimentos ricos en potasio: plátano, papa, jitomate, espinaca, melón, naranja entera, aguacate en cantidad.</li>
+      <li>Aplicar técnica de doble cocción en <strong>todas</strong> las verduras, sin excepción.</li>
+      <li>Pelar frutas (la cáscara concentra K⁺).</li>
+      <li>Evitar sustitutos de sal con KCl — pueden elevar K⁺ 1–2 mmol/L adicionales.</li>
+      <li>Reportar al médico para valorar resinas de intercambio catiónico (patiromer o poliestireno sulfonato) si la dieta sola no reduce K⁺.</li>
+      <li>Verificar cumplimiento de sesiones de HD (3×/semana) — cada sesión retira ~1–1.5 mEq/L de K⁺.</li>
+      <li>Furosemida 40 mg BID ya prescrita ayuda a excreción residual de K⁺; verificar adherencia.</li>
+    </ul>
+  </div>
+
+  <h3 class="sub-title">7.4 Hiperfosfatemia (P 5.8 mg/dL)</h3>
+  <div class="card">
+    <ul class="custom">
+      <li>Restringir fósforo &lt;800 mg/día; priorizar alimentos donde el fósforo es orgánico (mejor biodisponibilidad pero más controlable que aditivos).</li>
+      <li>Evitar bebidas oscuras (refrescos de cola, café concentrado, chocolate): contienen fosfatos inorgánicos con absorción &gt;90%.</li>
+      <li>Limitar proteínas de origen vegetal (leguminosas, nueces, semillas): alta relación P:proteína.</li>
+      <li>Elegir proteínas animales (pollo, pescado blanco, claras): relación P:proteína más favorable.</li>
+      <li>Pelar frutas y verduras: la cáscara concentra fosfatos.</li>
+      <li>Valorar con el médico el inicio de quelantes de fósforo (carbonato de calcio con alimentos, o sevelamer para evitar carga de calcio).</li>
+      <li>El Calcitriol prescrito puede empeorar la absorción de P; vigilar niveles de PTH.</li>
+      <li>El prurito urémico mejora cuando P &lt;4.5 mg/dL; el control dietético es esencial.</li>
+    </ul>
+  </div>
+
+  <h3 class="sub-title">7.5 Control de Líquidos</h3>
+  <div class="card">
+    <ul class="custom">
+      <li>Meta: ganancia interdialítica ≤1.86 kg (3% de 62 kg) → requiere restricción a ~800–1,000 mL/día total.</li>
+      <li>Usar taza o vaso medidor de 150 mL para controlar porciones de líquido.</li>
+      <li>Registrar todo líquido ingerido en app de cel o cuaderno (incluir: agua, caldos, leche, gelatina, helado, agua de fruta).</li>
+      <li>Identificar alimentos con alto contenido de agua: sopas, gelatina, helado, frutas jugosas — contabilizarlos.</li>
+      <li>La sed nocturna (síntoma principal) se controla principalmente reduciendo el sodio de la dieta, no aumentando la ingesta de líquidos.</li>
+      <li>En días calurosos o con fiebre, reportar al médico para ajuste de cuota hídrica.</li>
+    </ul>
+  </div>
+
+  <h3 class="sub-title">7.6 Náusea</h3>
+  <div class="card">
+    <ul class="custom">
+      <li>Fraccionamiento en 5 tiempos con porciones pequeñas; comer lentamente (20–30 min por tiempo).</li>
+      <li>Temperatura de alimentos: tibios o a temperatura ambiente (no calientes ni fríos extremos).</li>
+      <li>Evitar alimentos con olor intenso, grasosos o muy condimentados.</li>
+      <li>Jengibre natural rallado (½ cdita en infusión) tiene evidencia antiemética moderada; vigilar K⁺ si se consume en cantidad.</li>
+      <li>No recostarse inmediatamente después de comer; esperar 30–45 min.</li>
+      <li>Si la náusea es persistente, reportar al médico: puede ser síntoma de uremia (Urea 408 mg/dL) que mejora con adecuación dialítica.</li>
+      <li>Infusión de manzanilla sin azúcar (50–100 mL) puede aliviar náusea moderada.</li>
+    </ul>
+  </div>
+
+  <h3 class="sub-title">7.7 Prurito Urémico</h3>
+  <div class="card">
+    <ul class="custom">
+      <li>Control estricto de fósforo &lt;800 mg/día es la intervención nutricional más eficaz.</li>
+      <li>Hidratación de piel: cremas emolientes sin fragancias (no aplica restricción nutricional pero mejora síntoma).</li>
+      <li>Evitar baños con agua muy caliente (dilata vasos y exacerba prurito).</li>
+      <li>El control de PTH (con Calcitriol vigente) reduce depósitos de calcio-fósforo en piel, causa del prurito.</li>
+      <li>Reportar prurito persistente al médico: existe tratamiento farmacológico específico (difelikefalin, gabapentina en dosis renal).</li>
+      <li>La mejora en control glucémico también reduce neuropatía periférica que puede contribuir al prurito.</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECCIÓN 8 – EDUCACIÓN
+════════════════════════════════════════════════ -->
+<div class="section" id="edu">
+
+  <h2 class="sec-title">8. Educación Nutricional para el Paciente</h2>
+
+  <div class="alert-box info">
+    <div class="alert-title">ℹ Enfoque educativo</div>
+    Adaptado a paciente trabajador, con traslados largos y alto estrés. Mensajes concretos, prácticos y con justificación clara del "por qué" de cada restricción.
+  </div>
+
+  <h3 class="sub-title">8.1 Mensajes Clave para Armando</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Tema</th><th>Mensaje central</th><th>Ejemplo práctico</th></tr></thead>
+    <tbody>
+      <tr><td>Potasio y corazón</td><td>"El potasio alto en tu sangre puede detener tu corazón. Evitar plátano, papa y jitomate en cantidad es tan importante como tomar tus medicamentos."</td><td>Cambiar jitomate en tacos por pepino o lechuga. Cambiar plátano por manzana verde.</td></tr>
+      <tr><td>Doble cocción</td><td>"Hervir 2 veces y tirar el agua cada vez reduce el potasio de las verduras a la mitad. Es una técnica de cocina, no una opción."</td><td>Chayote, nopal, calabacita, ejotes: siempre doble cocción.</td></tr>
+      <tr><td>Sal y líquidos</td><td>"Cada gramo de sal extra que comes te genera sed, te hace tomar más agua y aumenta tu presión. Menos sal = menos sed = menos peso ganado entre diálisis."</td><td>Condimentar con ajo, limón, orégano. Nunca agregar sal en la mesa.</td></tr>
+      <tr><td>Azúcar y diálisis</td><td>"La glucosa alta daña tu acceso de diálisis y tus vasos sanguíneos. Dividir lo que comes en 5 tiempos pequeños controla mejor tu azúcar que 3 tiempos grandes."</td><td>Llevar colación portable al trabajo: galletas de arroz + clara de huevo cocida.</td></tr>
+      <tr><td>Fósforo y picazón</td><td>"La comida con mucho fósforo (refrescos de cola, chocolate, lácteos) empeora la picazón y daña tus huesos y vasos. Tu piel pica porque el fósforo se deposita en ella."</td><td>Cambiar refresco de cola por agua de jamaica sin azúcar. Evitar yogures y leche en exceso.</td></tr>
+      <tr><td>Proteína en HD</td><td>"La diálisis 'consume' proteína de tu cuerpo en cada sesión. Por eso necesitas comer suficiente pollo, pescado o claras de huevo — para reponer lo que pierdes."</td><td>2 pechugas medianas + 3 claras al día cubren la meta. Sin esto, tu músculo se consume.</td></tr>
+      <tr><td>Colación en traslados</td><td>"Tienes 3+ horas de traslado. Prepara tu colación en casa la noche anterior: galletas de arroz sin sal + 2 claras cocidas + pepino + agua en termo. Protege tu glucosa y tu riñón."</td><td>Lista de compras semanal que incluye estos alimentos. Preparar domingos para la semana.</td></tr>
+      <tr><td>Medicamentos y alimentos</td><td>"El sulfato ferroso se absorbe mejor en ayuno o con jugo de limón. No lo tomes con leche ni té. El calcitriol se toma con la comida más grande del día."</td><td>Sulfato ferroso: 30 min antes del desayuno. Calcitriol: con la comida.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 class="sub-title">8.2 Señales de Alarma que Requieren Consulta Inmediata</h3>
+  <div class="card">
+    <div class="pill-list">
+      <span class="pill pill-red">Mareo o palpitaciones → K⁺ alto</span>
+      <span class="pill pill-red">Dificultad para respirar acostado</span>
+      <span class="pill pill-red">Glucosa &gt;350 mg/dL o &lt;70 mg/dL</span>
+      <span class="pill pill-red">Ganancia &gt;2 kg en un día</span>
+      <span class="pill pill-red">PA &gt;180/110 mmHg</span>
+      <span class="pill pill-red">Orina muy oscura o sin orinar</span>
+      <span class="pill pill-red">Náusea + vómito persistente</span>
+    </div>
+  </div>
+
+  <h3 class="sub-title">8.3 Organización Práctica para un Paciente que Trabaja</h3>
+  <div class="card">
+    <ul class="custom">
+      <li><strong>Preparación dominical:</strong> Cocinar arroz, chayote (doble cocción), pollo deshebrado y claras de huevo cocidas para 3–4 días. Refrigerar en porciones individuales.</li>
+      <li><strong>Termo hídrico:</strong> Llenar con exactamente 300 mL de agua fría cada mañana. Cuando se acabe, no rellenar. Visualizar la cuota.</li>
+      <li><strong>Lista de compras semanal:</strong> Manzana, pera, fresa, pepino, jícama, chayote, calabacita, pollo, claras de huevo, mojarra, arroz, tortilla, galletas de arroz sin sal, aceite de oliva.</li>
+      <li><strong>App de registro:</strong> Usar Cronometer (gratuita) configurada con restricciones de K⁺, P, Na y kcal para control semanal.</li>
+      <li><strong>Comunicación con familia:</strong> Compartir la lista de alimentos prohibidos con quien cocine en casa. La preparación de comidas compartidas es el mayor riesgo de transgresiones involuntarias.</li>
+      <li><strong>En restaurantes:</strong> Pedir pollo a la plancha sin sal, arroz blanco, verduras cocidas sin sal. Evitar salsas, cremas, quesos.</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECCIÓN 9 – PES
+════════════════════════════════════════════════ -->
+<div class="section" id="pes">
+
+  <h2 class="sec-title">9. Diagnóstico Nutricional en Formato PES</h2>
+
+  <div class="pes-block">
+    <div class="pes-row">
+      <div class="pes-label">P — Problema</div>
+      <div class="pes-text">Ingesta inadecuada de alimentos y nutrimentos con patrón dietético inapropiado para enfermedad renal crónica estadio 5 en hemodiálisis, manifestado como ingesta excesiva de potasio, fósforo y sodio con restricción insuficiente de líquidos y distribución inadecuada de carbohidratos.</div>
+    </div>
+    <div class="pes-row">
+      <div class="pes-label">E — Etiología</div>
+      <div class="pes-text">Relacionado con: (1) conocimiento insuficiente sobre alimentos y nutrición específica para ERC-HD; (2) horarios de alimentación irregulares secundarios a traslados prolongados (&gt;3 h/día) y alto estrés laboral; (3) acceso limitado a preparación de alimentos durante jornada laboral; (4) fórmula polimérica sin fibra prescrita que no cubre la totalidad del requerimiento calórico-proteico sin apoyo nutricional complementario.</div>
+    </div>
+    <div class="pes-row">
+      <div class="pes-label">S — Signos/Síntomas</div>
+      <div class="pes-text">Evidenciado por: hiperpotasemia severa (K⁺ 7.1 mmol/L), hiperfosfatemia (P 5.8 mg/dL), hiperglucemia marcada (glucosa 301 mg/dL), sobrecarga hídrica con ganancia interdialítica de 3.5–4 L/sesión, edema maleolar +/++, diuresis residual &lt;300 mL/día, hipertensión no controlada (150/92 mmHg con picos 165/100), albúmina 3.9 g/dL (marginalmente por debajo de meta KDOQI ≥4 g/dL para HD), prurito urémico, náusea postprandial, y sed nocturna intensa.</div>
+    </div>
+  </div>
+
+  <h3 class="sub-title">PES Adicionales</h3>
+
+  <div class="pes-block" style="margin-top:.8rem;border-left:3px solid var(--amber);">
+    <div class="pes-row">
+      <div class="pes-label">P</div>
+      <div class="pes-text">Desequilibrio de nutrimentos: exceso de potasio y fósforo en la dieta habitual</div>
+    </div>
+    <div class="pes-row">
+      <div class="pes-label">E</div>
+      <div class="pes-text">Relacionado con desconocimiento de técnicas de reducción de K⁺/P (doble cocción, pelado, selección de alimentos) y consumo no supervisado de alimentos fuera del hogar</div>
+    </div>
+    <div class="pes-row">
+      <div class="pes-label">S</div>
+      <div class="pes-text">Evidenciado por K⁺ 7.1 mmol/L, P 5.8 mg/dL, prurito urémico y riesgo de arritmias cardíacas</div>
+    </div>
+  </div>
+
+  <div class="pes-block" style="margin-top:.8rem;border-left:3px solid var(--rose);">
+    <div class="pes-row">
+      <div class="pes-label">P</div>
+      <div class="pes-text">Ingesta calórica y proteica potencialmente insuficiente relativa a requerimientos aumentados por hemodiálisis</div>
+    </div>
+    <div class="pes-row">
+      <div class="pes-label">E</div>
+      <div class="pes-text">Relacionado con horarios irregulares, náusea postprandial, omisión de tiempos de comida por traslados y estrés</div>
+    </div>
+    <div class="pes-row">
+      <div class="pes-label">S</div>
+      <div class="pes-text">Evidenciado por albúmina 3.9 g/dL (meta &lt;4.0 g/dL), BUN pre-HD 190 mg/dL, urea 408 mg/dL y pérdida de aminoácidos intradialítica estimada 10–12 g/sesión</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECCIÓN 10 – CONCLUSIÓN
+════════════════════════════════════════════════ -->
+<div class="section" id="conclusion">
+
+  <h2 class="sec-title">10. Conclusión Clínica y Plan de Seguimiento</h2>
+
+  <div class="card">
+    <h3 class="sub-title" style="margin-top:0;">Conclusión Clínica</h3>
+    <p>Armando Carlos Gómez Sánchez, de 42 años, presenta un cuadro de <strong>riesgo nutricional moderado con complicaciones metabólicas múltiples de alta gravedad</strong> en el contexto de ERC estadio 5 en hemodiálisis trisemanal, con DM2 de 20 años de evolución e HAS de 3 años. La hiperpotasemia severa (K⁺ 7.1 mmol/L) representa la urgencia clínica de mayor riesgo vital inmediato, seguida de la hiperglucemia marcada (301 mg/dL) e hiperfosfatemia (5.8 mg/dL). La adecuación dialítica es limítrofe (URR 75%) y deberá evaluarse en conjunto con el nefrólogo.</p>
+    <br>
+    <p>La intervención nutricional propuesta está basada en evidencia (KDOQI 2020, ESPEN 2023) y adaptada a la realidad socioeconómica, cultural y laboral del paciente. El menú diseñado con el SMAE vigente permite cubrir el requerimiento calórico-proteico (1,950 kcal · 75–80 g proteína) respetando las restricciones de K⁺ &lt;2,000 mg, P &lt;800 mg, Na &lt;2,000 mg y líquidos ≤800 mL/día, con alimentos prácticos, portables y culturalmente apropiados para México.</p>
+    <br>
+    <p>El pronóstico nutricional es <strong>favorable si hay adherencia a las restricciones</strong>, especialmente de potasio y líquidos. La fórmula polimérica prescrita complementa adecuadamente el plan oral. Se requiere coordinación estrecha con el equipo multidisciplinario (nefrólogo, diabetólogo, trabajadora social) para abordar el estrés laboral como factor de riesgo sistémico.</p>
+  </div>
+
+  <h3 class="sub-title">Plan de Seguimiento Nutricional</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Período</th><th>Acciones / Metas</th><th>Parámetros a evaluar</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Semana 1–2</strong><br><span style="font-size:11px;color:var(--rose);">URGENTE</span></td>
+        <td>
+          • Educación intensiva: doble cocción, lista de prohibidos (K⁺).<br>
+          • Implementar restricción hídrica estricta 800 mL/día.<br>
+          • Verificar adherencia a sesiones de HD (3×/sem).<br>
+          • Iniciar registro alimentario diario (app o cuaderno).
+        </td>
+        <td>K⁺ sérico, glucemia capilar diaria, peso diario (ganancia interdialítica)</td>
+      </tr>
+      <tr>
+        <td><strong>Mes 1</strong></td>
+        <td>
+          • Revisión de registro alimentario; identificar transgresiones.<br>
+          • Ajuste de menú según tolerancia y disponibilidad.<br>
+          • Evaluar náusea: ajustar tiempos y texturas si persiste.<br>
+          • Comunicar a médico resultados de K⁺ y glucosa para ajuste farmacológico.
+        </td>
+        <td>Bioquímica completa: K⁺, P, glucosa, albúmina, Hb; PA; peso seco; ganancia ID</td>
+      </tr>
+      <tr>
+        <td><strong>Mes 2–3</strong></td>
+        <td>
+          • Evaluar albúmina: si persiste &lt;4.0 g/dL, considerar suplementación proteica intradialítica (IDPN).<br>
+          • Ajustar distribución de equivalentes según evolución de K⁺ y P.<br>
+          • Educación nutricional reforzada con familiar/cuidador.<br>
+          • Valorar cambio a quelante de fósforo con nefrólogo.
+        </td>
+        <td>Albúmina, prealbúmina, PCR-us, K⁺, P, Ca×P, PTH, HbA1c estimada</td>
+      </tr>
+      <tr>
+        <td><strong>Cada 3 meses</strong></td>
+        <td>
+          • Evaluación nutricional completa con SGA-7 (Subjective Global Assessment modificado).<br>
+          • Revisión de todos los grupos de equivalentes SMAE.<br>
+          • Ajuste calórico y proteico según cambios en peso seco y estado clínico.<br>
+          • Registro de adherencia a HD y laboratorios del mes.
+        </td>
+        <td>Panel metabólico completo, bioimpedancia (si disponible), antropometría</td>
+      </tr>
+      <tr>
+        <td><strong>Indicadores de éxito</strong></td>
+        <td colspan="2">
+          K⁺ &lt;5.5 mmol/L · P &lt;4.5 mg/dL · Glucosa &lt;180 mg/dL postprandial · Albúmina ≥4.0 g/dL ·
+          Ganancia ID ≤1.86 kg · PA &lt;140/90 mmHg · Hb 10–12 g/dL · Reducción/desaparición de prurito · Sin náusea postprandial
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 class="sub-title">Coordinación Interdisciplinaria Recomendada</h3>
+  <div class="card">
+    <div class="pill-list">
+      <span class="pill pill-green">Nefrólogo: URR, quelantes P, ajuste HD</span>
+      <span class="pill pill-green">Diabetólogo: ajuste insulina glargina (glucosa 301)</span>
+      <span class="pill pill-green">Cardiólogo: monitoreo K⁺ y HAS</span>
+      <span class="pill pill-green">Trabajadora social: apoyo logístico traslados</span>
+      <span class="pill pill-green">Psicología: manejo estrés laboral</span>
+      <span class="pill pill-green">Enfermería de HD: educación técnica acceso vascular</span>
+    </div>
+  </div>
+
+  <div class="alert-box info" style="margin-top:1rem;">
+    <div class="alert-title">📋 Referencias clínicas utilizadas</div>
+    KDOQI Clinical Practice Guideline for Nutrition in CKD: 2020 Update. <em>Am J Kidney Dis.</em> 2020;76(3, Suppl 1):S1–S107. · ESPEN Guideline on Clinical Nutrition in Hospitalized Patients with Renal Disease. <em>Clin Nutr.</em> 2023. · Pérez Lizaur AB, et al. <em>Sistema Mexicano de Alimentos Equivalentes</em>, 4.ª ed. Ogali, 2014 (actualización 2022). · NKF KDOQI Guidelines for Hemodialysis Adequacy 2015. · ADA Standards of Medical Care in Diabetes 2024.
+  </div>
+
+</div>
+
+</main>
+
+<footer>
+  <span>Plan nutricional elaborado con base en KDOQI 2020 · ESPEN 2023 · SMAE 4.ª ed. · Solo para uso clínico profesional</span>
+  <span>Nutriólogo Clínico · Especialidad Nefrología y Diabetes · Revisión: Jun 2026</span>
+</footer>
+
+<script>
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showDay(id, btn) {
+  document.querySelectorAll('.menu-day').forEach(d => d.classList.remove('active'));
+  document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+
+</body>
+</html>
